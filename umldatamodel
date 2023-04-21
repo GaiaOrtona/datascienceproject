@@ -1,0 +1,57 @@
+class IdentifiableEntity(object):
+    def __init__(self, id) -> str:
+        self.id = id
+    def getId(self) -> str:
+        return self.id
+    
+class Image(IdentifiableEntity):
+    pass
+
+    
+class Annotation(IdentifiableEntity):
+    def __init__(self, motivation, body, target) -> str:
+        self.motivation = motivation
+        self.body = body
+        self.target = target
+    def getBody(self) -> Image:
+        return self.body
+    def getMotivation(self):
+        return self.motivation
+    def getTarget(self) -> IdentifiableEntity:
+        return self.target
+    
+class EntityWithMetadata(IdentifiableEntity):
+    def __init__(self, lable, title, creators) -> str:
+        self.lable = lable
+        self.title = title
+        self.creators = set()
+        for creator in creators:
+            self.creators.add(creator)
+        
+    def getLabel(self) -> str:
+        return self.lable
+    def getTitle(self) -> str:
+        return self.title
+    def getCreators(self) -> list[str]:
+        return self.creators
+    
+class Canvas(EntityWithMetadata):
+    def __init__(self, lable, title, creators) -> str:
+        super().__init__(lable, title, creators)
+    
+class Manifest(EntityWithMetadata):
+    def __init__(self, lable, title, creators, items) -> str:
+        super().__init__(lable, title, creators)
+        self.items = items
+        for item in items:
+            self.items.add(item)
+    def getItems(self) -> list[Canvas]:
+        return self.items
+class Collection(EntityWithMetadata):
+    def __init__(self, lable, title, creators, items) -> str:
+        super().__init__(lable, title, creators)
+        self.items = items
+        for item in items:
+            self.items.add(item)
+    def getItems(self) -> list[Manifest]:
+        return self.items
